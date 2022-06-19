@@ -3,7 +3,7 @@ import initMiddleware from "../../lib/init-middleware";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 // Init middleware
-const cors = initMiddleware(Cors({ methods: ["GET"] }));
+const cors = initMiddleware(Cors({ methods: ["POST"] }));
 
 export default async function handler(
   req: NextApiRequest,
@@ -11,9 +11,20 @@ export default async function handler(
 ) {
   await cors(req, res);
 
-  const { id } = req.query;
+  const { query, source } = req.query;
 
-  const response = await fetch(`http://localhost:80/search/${id}`);
+  const options = {
+    method: "POST",
+    body: "",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  const response = await fetch(
+    `http://localhost:80/search/${source}/?query=${query}`,
+    options
+  );
 
   const data = await response.json();
 
