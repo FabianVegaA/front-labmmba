@@ -5,9 +5,28 @@ import { Publication, search } from "../lib/search";
 import ReactLoading from "react-loading";
 import Header from "../components/header";
 import Footer from "../components/footer";
+import styles from "../styles/Home.module.css";
 
+function Publication({ pub }: { pub: Publication }) {
+  return (
+    <div>
+      <a href={pub.pub_url} target="_blank">
+        {pub.bib.title}
+      </a>
+      {pub.bib.abstract}
+      <div>
+        <p>Author: {pub.bib.author.length === 0 || pub.bib.author[0] === "" ? "Sorry, we couldn't find the author" : pub.bib.author}</p>
+        <p> Year: {pub.bib.pub_year}</p>
+      </div>
+    </div>
+  );
+}
 function Publications({ results }: { results: Publication[] }) {
-  return <ul>{results.map((pub) => <li> {pub.bib.abstract}</li>).concat()}</ul>;
+  return (
+    <div className={styles.publication}>
+      {results.map((pub) => <Publication pub={pub} />).concat()}
+    </div>
+  );
 }
 
 function getPublications(query: string, source: string) {
@@ -20,7 +39,15 @@ function getPublications(query: string, source: string) {
   if (error) return <h1>Error</h1>;
   if (!data)
     return (
-      <ReactLoading type={"spin"} color={"#3366FF"} height={667} width={375} />
+      <div className={styles.load}>
+        <ReactLoading
+          type={"spokes"}
+          color={"#009988"}
+          height={200}
+          width={200}
+        />
+        <p>This will take just a moment</p>
+      </div>
     );
   const results: Publication[] = data.results;
   return (
@@ -47,7 +74,7 @@ export default function SearchResult() {
   return (
     <div>
       <Header />
-      {getPublications(query, source)}
+      <main className={styles.main}>{getPublications(query, source)}</main>
       <Footer />
     </div>
   );
