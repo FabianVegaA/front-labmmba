@@ -7,7 +7,7 @@ import Header from "../components/header";
 import Footer from "../components/footer";
 
 function Publications({ results }: { results: Publication[] }) {
-  return <ul>{results.map((pub) => <li> {pub.bib.title}</li>).concat()}</ul>;
+  return <ul>{results.map((pub) => <li> {pub.bib.abstract}</li>).concat()}</ul>;
 }
 
 function getPublications(query: string, source: string) {
@@ -20,7 +20,7 @@ function getPublications(query: string, source: string) {
   if (error) return <h1>Error</h1>;
   if (!data)
     return (
-      <ReactLoading type={"balls"} color={"#3366FF"} height={667} width={375} />
+      <ReactLoading type={"spin"} color={"#3366FF"} height={667} width={375} />
     );
   const results: Publication[] = data.results;
   return (
@@ -33,17 +33,21 @@ function getPublications(query: string, source: string) {
 export default function SearchResult() {
   const router = useRouter();
 
-  const source = router.query.source;
+  const source = Array.isArray(router.query.source)
+    ? router.query.source[0]
+    : router.query.source;
   if (!source) return <h1>No source received</h1>;
 
-  const query = router.query.query;
+  const query = Array.isArray(router.query.query)
+    ? router.query.query[0]
+    : router.query.query;
   if (!query) return <h1>No query received</h1>;
   if (query === "") return <h1>The query is empty</h1>;
 
   return (
     <div>
       <Header />
-      {getPublications("h1n1", "scholar")}
+      {getPublications(query, source)}
       <Footer />
     </div>
   );
