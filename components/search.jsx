@@ -5,13 +5,13 @@ function Search() {
   return (
     <form
       asp-controller="Home"
-      action="bacterium"
+      action="search"
       asp-action="Index"
       method="get"
     >
       <section className={styles.input}>
         <div className={styles.searchcontainer}>
-          <input type="text" name="name" />
+          <input type="text" name="query" />
           <button>
             <img
               src="https://cdn.pixabay.com/photo/2017/01/13/01/22/magnifying-glass-1976105_960_720.png"
@@ -22,9 +22,8 @@ function Search() {
         </div>
       </section>
       <section className={styles.checkbox}>
-        <input type="checkbox" name="google-schollar" />
-        Google Schollar
-        <input type="checkbox" name="lpsm" /> LPSM
+        <input type="radio" name="source" value="scholar"/> Google Scholar
+        <input type="radio" name="source" value="lpsm" /> LPSM
       </section>
     </form>
   );
