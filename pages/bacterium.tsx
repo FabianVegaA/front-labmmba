@@ -1,6 +1,10 @@
 import styles from "../styles/Home.module.css";
 import Footer from "../components/footer.jsx";
 import Search from "../components/search.jsx";
+import { useRouter } from "next/router";
+import { GetServerSideProps } from "next/types";
+import { search } from "../lib/search";
+import useSWR from "swr";
 
 type old = {
   name: string;
@@ -76,7 +80,7 @@ const bacterium = {
 
 function Old({ olds }: { olds: old[] }) {
   return (
-    <>
+    <div>
       {olds
         .map((old) => (
           <p>
@@ -84,7 +88,7 @@ function Old({ olds }: { olds: old[] }) {
           </p>
         ))
         .concat()}
-    </>
+    </div>
   );
 }
 
@@ -110,7 +114,7 @@ function Header() {
     <header className={styles.header}>
       <a href="/">
         <div>
-          <img src="/vercel.svg" alt="Logo" />
+          <img src="/labmmba.svg" alt="Logo" />
           <h1>LabMMBA</h1>
         </div>
       </a>
@@ -123,26 +127,59 @@ function Header() {
 
 function Main() {
   return (
-    <main className={styles.main}>
-      <h2>{bacterium.name}</h2>
-      <div>
-        <h3>Taxonomy</h3>
-        <p>NCBI Taxonomy ID: {bacterium.taxonomy.id}</p>
-        <p>Taxonomy rank: species</p>
-        <h3>Genome</h3>
-        <p>Genome size: {bacterium.genome.size} Mb</p>
-        <p>Contig N50: {bacterium.genome.n50} Mb</p>
-        <p>Genes: {bacterium.genome.genes}</p>
-        <h3>Old Names</h3>
-        <Old olds={bacterium.old_names} />
-        <hr></hr>
-        <Article articles={bacterium.articles} />
-      </div>
-    </main>
+    <>
+      <main className={styles.main}>
+        <h2>{bacterium.name}</h2>
+        <div>
+          <h3>Taxonomy</h3>
+          <p>NCBI Taxonomy ID: {bacterium.taxonomy.id}</p>
+          <p>Taxonomy rank: species</p>
+          <h3>Genome</h3>
+          <p>Genome size: {bacterium.genome.size} Mb</p>
+          <p>Contig N50: {bacterium.genome.n50} Mb</p>
+          <p>Genes: {bacterium.genome.genes}</p>
+          <h3>Old Names</h3>
+          <Old olds={bacterium.old_names} />
+          <hr></hr>
+          <Article articles={bacterium.articles} />
+        </div>
+      </main>
+    </>
   );
 }
 
+function getQueryAndSource(query: { name: string; _: string }): {
+  _query: string;
+  _source: string;
+} {
+  const _query: string = query.name;
+  const _source: string = Object.entries(query)
+    .filter(([_, value]) => value === "on")
+    .map(([key, _]) => key)[0];
+  return { _query, _source };
+}
+
 export default function Bacterium() {
+  // const query = useRouter();
+
+  // if (!query.query) throw Error("Something Fail");
+  // const { data, error } = useSWR(
+  //   getQueryAndSource(query.query as { name: string; _: string }),
+  //   async (params: { _query: string; _source: string }) => {
+  //     await search(params._query, params._source);
+  //   }
+  // );
+
+  // if (error) throw error;
+  // if (!data)
+  //   return (
+  //     <div>
+  //       <Header />
+  //       <Main />
+  //       <Footer />
+  //     </div>
+  //   );
+
   return (
     <div>
       <Header />
@@ -150,4 +187,10 @@ export default function Bacterium() {
       <Footer />
     </div>
   );
+}
+
+export async function getServerSideProps(context: GetServerSideProps) {
+  return {
+    props: {},
+  };
 }
