@@ -8,7 +8,7 @@ function Footer() {
         target="_blank"
         rel="noopener noreferrer"
       >
-        Los increativos <img src="/vercel.svg" alt="Logo" />
+        Los increativos <img src="/labmmba.svg" alt="Logo" />
       </a>
     </footer>
   );
