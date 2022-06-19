@@ -5,10 +5,12 @@ import Search from "../components/search";
 
 function SearchBig() {
   return (
-    <main className={styles.main}>
-      <h1 className={styles.title}>Welcome to labMMBA.</h1>
-      <Search />
-    </main>
+    <div>
+      <main className={styles.main}>
+        <h1 className={styles.title}>Welcome to labMMBA.</h1>
+        <Search />
+      </main>
+    </div>
   );
 }
 
@@ -17,7 +19,7 @@ export default function Home() {
     <div className={styles.container}>
       <Head>
         <title>Home</title>
-        <link rel="icon" href="/vercel.svg" />
+        <link rel="icon" href="/labmmba.svg" />
       </Head>
       <SearchBig />
       <Footer />
