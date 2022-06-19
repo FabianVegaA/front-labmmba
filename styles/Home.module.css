@@ -19,8 +19,9 @@
   width: 100%;
   height: 100px;
   border-top: 1px solid #eaeaea;
-  position: absolute;
+  position: fixed;
   bottom: -30px;
+  background-color: #fff;
 }
 
 .footer img {
@@ -82,11 +83,11 @@
   border: none;
   outline: none;
 }
-.input button{
+.input button {
   border: none;
   background-color: #fff;
 }
-.checkbox input{
+.checkbox input {
   margin-left: 2%;
 }
 .searchcontainer:hover {
@@ -94,7 +95,7 @@
   border-color: #eeeeee;
 }
 
-.header{
+.header {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -103,33 +104,64 @@
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   padding: 0 50px;
 }
-.header div{
+.header div {
   display: flex;
   flex-direction: row;
   align-items: center;
   padding: 0px;
   gap: 13px;
 }
-.header h1{
-  font-family: 'Roboto';
+.header h1 {
+  font-family: "Roboto";
   font-size: 40px;
-  color:#009988;
+  color: #009988;
 }
 .header input {
   height: 30px;
 }
-.header .input{
+.header .input {
   width: 500px;
   margin: 0;
 }
-.header .checkbox{
+.header .checkbox {
   display: flex;
   align-items: center;
 }
-.main h2, .main h3, .main p, .main a{
-  color: #4C4C4C;
+.main h2,
+.main h3,
+.main p,
+.main a {
+  color: #4c4c4c;
 }
 
+.load {
+  position: absolute;
+  top: 35%;
+  right: 45%;
+}
+.publication {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.publication div {
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid rgba(90, 90, 90, 0.486);
+  width: 100%;
+}
+.publication a {
+  color: #005047;
+  font-weight: bolder;
+}
+.publication div div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 0;
+}
 @media (max-width: 600px) {
   .grid {
     width: 100%;
