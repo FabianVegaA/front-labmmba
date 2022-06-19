@@ -19,6 +19,7 @@ export type Publication = {
   citedby_url: string;
   url_related_articles: string;
   eprint_url: string;
+  pub_url: string;
 };
 
 export type SearchResult = {
