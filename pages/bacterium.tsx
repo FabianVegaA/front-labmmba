@@ -1,10 +1,9 @@
 import styles from "../styles/Home.module.css";
 import Footer from "../components/footer.jsx";
 import Search from "../components/search.jsx";
-import { useRouter } from "next/router";
 import { GetServerSideProps } from "next/types";
-import { search } from "../lib/search";
-import useSWR from "swr";
+
+
 
 type old = {
   name: string;
@@ -148,16 +147,8 @@ function Main() {
   );
 }
 
-function getQueryAndSource(query: { name: string; _: string }): {
-  _query: string;
-  _source: string;
-} {
-  const _query: string = query.name;
-  const _source: string = Object.entries(query)
-    .filter(([_, value]) => value === "on")
-    .map(([key, _]) => key)[0];
-  return { _query, _source };
-}
+
+
 
 export default function Bacterium() {
   // const query = useRouter();
