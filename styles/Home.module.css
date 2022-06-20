@@ -48,11 +48,6 @@
   text-align: center;
 }
 
-.title a:hover,
-.title a:focus,
-.title a:active {
-  text-decoration: underline;
-}
 .grid {
   display: flex;
   align-items: center;
@@ -82,10 +77,11 @@
   height: 50px;
   border: none;
   outline: none;
+  background-color: inherit;
 }
 .input button {
   border: none;
-  background-color: #fff;
+  background-color: inherit;
 }
 .checkbox input {
   margin-left: 2%;
@@ -136,7 +132,10 @@
 .load {
   position: absolute;
   top: 35%;
-  right: 45%;
+  right: 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .publication {
   display: flex;
@@ -175,9 +174,47 @@
   color: #005047;
   font-size: 40px;
 }
+@media (min-width: 601px) and (max-width: 1000px) {
+  .header .input {
+    width: 300px;
+    margin: 0;
+  }
+}
 @media (max-width: 600px) {
   .grid {
     width: 100%;
     flex-direction: column;
+  }
+  .header {
+    padding: 0 20px;
+  }
+  .header h1 {
+    display: none;
+  }
+  .header form {
+    margin: 10px 0 5px;
+  }
+  .header .input {
+    width: 100%;
+    padding: 1%;
+  }
+  .load {
+    position: absolute;
+    top: 35%;
+    right: 23%;
+  }
+  .title {
+    font-size: 30px;
+  }
+  .bigSearch {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .input {
+    width: 100%;
+  }
+  .input input {
+    height: 30px;
   }
 }
