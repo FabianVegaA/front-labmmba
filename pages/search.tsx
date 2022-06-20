@@ -1,3 +1,4 @@
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next/types";
 import useSWR from "swr";
@@ -67,8 +68,8 @@ function getPublications(query: string, source: string) {
         <ReactLoading
           type={"spokes"}
           color={"#009988"}
-          height={200}
-          width={200}
+          height={"50%"}
+          width={"50%"}
         />
         <p>This will take just a moment</p>
       </div>
@@ -97,6 +98,10 @@ export default function SearchResult() {
 
   return (
     <div>
+      <Head>
+        <title>{query}</title>
+        <link rel="icon" href="/labmmba.svg" />
+      </Head>
       <Header />
       <main className={styles.main}>{getPublications(query, source)}</main>
       <Footer />
