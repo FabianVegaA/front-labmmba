@@ -6,6 +6,7 @@ import ReactLoading from "react-loading";
 import Header from "../components/header";
 import Footer from "../components/footer";
 import styles from "../styles/Home.module.css";
+import Image from "next/image";
 
 function Publication({ pub }: { pub: Publication }) {
   return (
@@ -15,7 +16,12 @@ function Publication({ pub }: { pub: Publication }) {
       </a>
       {pub.bib.abstract}
       <div>
-        <p>Author: {pub.bib.author.length === 0 || pub.bib.author[0] === "" ? "Sorry, we couldn't find the author" : pub.bib.author}</p>
+        <p>
+          Author:{" "}
+          {pub.bib.author.length === 0 || pub.bib.author[0] === ""
+            ? "Sorry, we couldn't find the author"
+            : pub.bib.author}
+        </p>
         <p> Year: {pub.bib.pub_year}</p>
       </div>
     </div>
@@ -29,6 +35,24 @@ function Publications({ results }: { results: Publication[] }) {
   );
 }
 
+function PageError({ error }: { error: any }) {
+  console.log("Error: ", error);
+
+  return (
+    <main className={styles.error}>
+      <div>
+        <h1>Error</h1>
+        <p>
+          We are sorry, but it seems that the bacteria has escaped from our
+          database.
+        </p>
+        <p>Maybe you should wear a mask.</p>
+      </div>
+      <Image src="/error.svg" width="250" height="250" />
+    </main>
+  );
+}
+
 function getPublications(query: string, source: string) {
   const { data, error } = useSWR(
     { query, source },
@@ -36,7 +60,7 @@ function getPublications(query: string, source: string) {
       await search(query, source)
   );
 
-  if (error) return <h1>Error</h1>;
+  if (error) return <PageError error={error} />;
   if (!data)
     return (
       <div className={styles.load}>
