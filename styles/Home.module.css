@@ -112,7 +112,6 @@
   gap: 13px;
 }
 .header h1 {
-  font-family: "Roboto";
   font-size: 40px;
   color: #009988;
 }
@@ -144,13 +143,15 @@
   justify-content: space-between;
   flex-wrap: wrap;
   align-items: center;
+  font-size: large;
+  margin-bottom: 40px;
 }
-.publication div {
-  margin: 10px;
+.publication > div {
+  margin: 10px 5%;
   display: flex;
   flex-direction: column;
   border-bottom: 1px solid rgba(90, 90, 90, 0.486);
-  width: 100%;
+  width: 90%;
 }
 .publication a {
   color: #005047;
@@ -160,7 +161,19 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  font-size: medium;
   margin: 0;
+}
+.error {
+  position: absolute;
+  top: 35%;
+  left: 27%;
+  display: flex;
+  justify-content: center;
+}
+.error h1 {
+  color: #005047;
+  font-size: 40px;
 }
 @media (max-width: 600px) {
   .grid {
