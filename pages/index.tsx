@@ -6,8 +6,8 @@ import Search from "../components/search";
 function SearchBig() {
   return (
     <div>
-      <main className={styles.main}>
-        <h1 className={styles.title}>Welcome to labMMBA.</h1>
+      <main className={styles.bigSearch}>
+        <h1 className={styles.title}>Welcome to labMMBA</h1>
         <Search />
       </main>
     </div>
