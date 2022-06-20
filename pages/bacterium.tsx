@@ -3,8 +3,6 @@ import Footer from "../components/footer.jsx";
 import Search from "../components/search.jsx";
 import { GetServerSideProps } from "next/types";
 
-
-
 type old = {
   name: string;
   date: number;
@@ -146,9 +144,6 @@ function Main() {
     </>
   );
 }
-
-
-
 
 export default function Bacterium() {
   // const query = useRouter();
