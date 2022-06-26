@@ -1,4 +1,5 @@
 import styles from "../styles/Home.module.css";
+import Image from "next/image";
 
 function Footer() {
   return (
@@ -8,7 +9,7 @@ function Footer() {
         target="_blank"
         rel="noopener noreferrer"
       >
-        Los increativos <img src="/labmmba.svg" alt="Logo" />
+        <span>Los increativos</span> <Image src="/labmmba.svg" alt="Logo" width={40} height={40}/>
       </a>
     </footer>
   );
