@@ -1,4 +1,5 @@
 import styles from "../styles/Home.module.css";
+import Image from "next/image";
 
 
 function Search() {
@@ -13,9 +14,10 @@ function Search() {
         <div className={styles.searchcontainer}>
           <input type="text" name="query" />
           <button>
-            <img
-              src="https://cdn.pixabay.com/photo/2017/01/13/01/22/magnifying-glass-1976105_960_720.png"
-              width="20px"
+            <Image
+              src="/lupa.png"
+              width={20}
+              height={20}
               alt="search-icon"
             />
           </button>
