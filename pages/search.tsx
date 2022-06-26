@@ -8,6 +8,20 @@ import Header from "../components/header";
 import Footer from "../components/footer";
 import styles from "../styles/Home.module.css";
 import Image from "next/image";
+import FormPublication from "../components/formPublication";
+
+const handleClick = (e: any) => {
+  if (e === "Bacteria") {
+    alert(e);
+  } else if (e === "Publication") {
+    alert(e);
+  } else {
+    var sure = confirm("Are you sure?");
+    if (sure === true) {
+      alert("Delete " + e);
+    }
+  }
+};
 
 function Publication({ pub }: { pub: Publication }) {
   return (
@@ -17,13 +31,21 @@ function Publication({ pub }: { pub: Publication }) {
       </a>
       {pub.bib.abstract}
       <div>
-        <p>
-          Author:{" "}
-          {pub.bib.author.length === 0 || pub.bib.author[0] === ""
-            ? "Sorry, we couldn't find the author"
-            : pub.bib.author}
-        </p>
-        <p> Year: {pub.bib.pub_year}</p>
+        <div>
+          <p>
+            Author:{" "}
+            {pub.bib.author.length === 0 || pub.bib.author[0] === ""
+              ? "Sorry, we couldn't find the author"
+              : pub.bib.author}
+          </p>
+          <p> Year: {pub.bib.pub_year}</p>
+        </div>
+        <button
+          className={styles.button}
+          onClick={() => handleClick(pub.bib.title)}
+        >
+          Delete
+        </button>
       </div>
     </div>
   );
@@ -43,10 +65,7 @@ function PageError({ error }: { error: any }) {
     <main className={styles.error}>
       <div>
         <h1>Error</h1>
-        <p>
-          We are sorry, but it seems that the bacteria has escaped from our
-          database.
-        </p>
+        <p>It seems that the bacteria has escaped from our database.</p>
         <p>Maybe you should wear a mask.</p>
       </div>
       <Image src="/error.svg" width="250" height="250" />
@@ -77,6 +96,21 @@ function getPublications(query: string, source: string) {
   const results: Publication[] = data.results;
   return (
     <div>
+      <h2>{query}</h2>
+      <div className={styles.add}>
+        <input type="checkbox" />
+        <span>+</span>
+        <ul>
+          <li>
+            <button onClick={() => handleClick("Bacteria")}>Bacteria</button>
+          </li>
+          <li>
+            <button onClick={() => handleClick("Publication")}>
+              Publication
+            </button>
+          </li>
+        </ul>
+      </div>
       <Publications results={results} />
     </div>
   );
