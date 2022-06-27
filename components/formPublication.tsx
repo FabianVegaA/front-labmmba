@@ -1,28 +1,51 @@
 import styles from "../styles/Home.module.css";
-import Image from "next/image";
-function formPublication() {
+import { Dispatch, SetStateAction } from "react";
+
+function FormPublication({
+  setState,
+}: {
+  setState: Dispatch<SetStateAction<boolean>>;
+}) {
   return (
-    <form
-      asp-controller="Home"
-      action="search"
-      asp-action="Index"
-      method="get"
-      className={styles.formpublication}
-    >
-      <section className={styles.input}>
-        <div className={styles.searchcontainer}>
-          <input type="text" name="query" />
-          <button>
-            <Image src="/lupa.png" width={20} height={20} alt="search-icon" />
-          </button>
+    <div className={styles.formpublication}>
+      <form
+        asp-controller="Home"
+        action="search"
+        asp-action="Index"
+        method="post"
+      >
+        <h2>Add publication</h2>
+        <p>
+          The publication you are creating will be associated with the current
+          bacteria.
+        </p>
+        <label>
+          Title:
+          <input type="text" id="title" />
+        </label>
+        <label>
+          URL:
+          <input type="text" id="url" />
+        </label>
+        <label>
+          Abstract:
+          <input type="text" id="abstract" />
+        </label>
+        <label>
+          Author:
+          <input type="text" id="author" />
+        </label>
+        <label>
+          Publication day:
+          <input type="text" id="pub_year" />
+        </label>
+        <div>
+          <button onClick={() => setState(false)}>Cancelar</button>
+          <input type="submit" value="Submit" />
         </div>
-      </section>
-      <section className={styles.checkbox}>
-        <input type="radio" name="source" value="scholar" /> Google Scholar
-        <input type="radio" name="source" value="lpsm" /> LPSM
-      </section>
-    </form>
+      </form>
+    </div>
   );
 }
 
-export default formPublication;
+export default FormPublication;
