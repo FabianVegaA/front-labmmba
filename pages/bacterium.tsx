@@ -3,8 +3,6 @@ import Footer from "../components/footer.jsx";
 import Search from "../components/search.jsx";
 import { GetServerSideProps } from "next/types";
 
-
-
 type old = {
   name: string;
   date: number;
@@ -58,21 +56,21 @@ const bacterium = {
         "Consectetur adipiscing elit duis tristique sollicitudin nibh sit amet commodo.",
       description:
         "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat...",
-      link: "http://localhost:3000",
+      link: "http://localhost:3001",
     },
     {
       title:
         "Consectetur adipiscing elit duis tristique sollicitudin nibh sit amet commodo.",
       description:
         "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat...",
-      link: "http://localhost:3000",
+      link: "http://localhost:3001",
     },
     {
       title:
         "Consectetur adipiscing elit duis tristique sollicitudin nibh sit amet commodo.",
       description:
         "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat...",
-      link: "http://localhost:3000",
+      link: "http://localhost:3001",
     },
   ],
 };
@@ -146,9 +144,6 @@ function Main() {
     </>
   );
 }
-
-
-
 
 export default function Bacterium() {
   // const query = useRouter();
