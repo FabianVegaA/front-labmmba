@@ -9,6 +9,8 @@ import Footer from "../components/footer";
 import styles from "../styles/Home.module.css";
 import Image from "next/image";
 import FormPublication from "../components/formPublication";
+import { useEffect, useState } from "react";
+import FormBacterium from "../components/formBacterium";
 
 const handleClick = (e: any) => {
   if (e === "Bacteria") {
@@ -73,7 +75,16 @@ function PageError({ error }: { error: any }) {
   );
 }
 
-function getPublications(query: string, source: string) {
+function ListPublications({
+  query,
+  source,
+}: {
+  query: string;
+  source: string;
+}) {
+  const [showFormBacterium, setShowFormBacterium] = useState(false);
+  const [showFormPublication, setShowFormPublication] = useState(false);
+
   const { data, error } = useSWR(
     { query, source },
     async ({ query, source }: { query: string; source: string }) =>
@@ -94,18 +105,25 @@ function getPublications(query: string, source: string) {
       </div>
     );
   const results: Publication[] = data.results;
+
   return (
     <div>
+      {showFormBacterium ? (
+        <FormBacterium setState={setShowFormBacterium} />
+      ) : null}
+      {showFormPublication ? (
+        <FormPublication setState={setShowFormPublication} />
+      ) : null}
       <h2>{query}</h2>
       <div className={styles.add}>
         <input type="checkbox" />
         <span>+</span>
         <ul>
           <li>
-            <button onClick={() => handleClick("Bacteria")}>Bacteria</button>
+            <button onClick={() => setShowFormBacterium(true)}>Bacteria</button>
           </li>
           <li>
-            <button onClick={() => handleClick("Publication")}>
+            <button onClick={() => setShowFormPublication(true)}>
               Publication
             </button>
           </li>
@@ -137,7 +155,9 @@ export default function SearchResult() {
         <link rel="icon" href="/labmmba.svg" />
       </Head>
       <Header />
-      <main className={styles.main}>{getPublications(query, source)}</main>
+      <main className={styles.main}>
+        <ListPublications query={query} source={source} />
+      </main>
       <Footer />
     </div>
   );
