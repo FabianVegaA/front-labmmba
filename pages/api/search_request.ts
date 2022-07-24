@@ -11,7 +11,7 @@ export default async function handler(
 ) {
   await cors(req, res);
 
-  const { query, source } = req.query;
+  const { query } = req.query;
 
   const options = {
     method: "POST",
@@ -21,12 +21,12 @@ export default async function handler(
     },
   };
 
-  const response = await fetch(
-    `http://localhost:80/search/${source}/?query=${query}`,
+  const responseBioInfo = await fetch(
+    `http://localhost:80/search/scholar/?query=${query}`,
     options
   );
 
-  const data = await response.json();
+  const dataBioInfo = await responseBioInfo.json();
 
-  res.status(200).json(data);
+  res.status(200).json(dataBioInfo);
 }
