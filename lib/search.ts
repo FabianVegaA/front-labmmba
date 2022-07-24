@@ -1,3 +1,5 @@
+import { SearchResultBacteria } from "./types";
+
 export type Bibliography = {
   title: string;
   author: string[];
@@ -22,15 +24,40 @@ export type Publication = {
   pub_url: string;
 };
 
-export type SearchResult = {
+type SearchResultPublications = {
   status: string;
   source: string;
   results: Publication[];
 };
 
+export type SearchResult = {
+  publications: SearchResultPublications;
+  bacteriaInfo: SearchResultBacteria;
+};
+
+export async function search(
+  query: string,
+  source: string
+): Promise<SearchResult> {
+  const defaultSearchPublication: SearchResultPublications = {
+    status: "OK",
+    source: "default",
+    results: [],
+  };
+
+  const bacteriaInfo = await searchBacteria(query);
+
+  console.log(bacteriaInfo);
+
+  return {
+    publications: defaultSearchPublication,
+    bacteriaInfo: bacteriaInfo,
+  };
+}
+
 export async function getPublicationsResult(
   apiUrl: string
-): Promise<SearchResult> {
+): Promise<SearchResultPublications> {
   const response = await fetch(apiUrl);
 
   return await response.json().then((data) => ({
@@ -40,10 +67,10 @@ export async function getPublicationsResult(
   }));
 }
 
-export async function search(
+export async function searchPublications(
   query: string,
   source: string
-): Promise<SearchResult> {
+): Promise<SearchResultPublications> {
   const options = {
     method: "POST",
     body: "",
@@ -64,5 +91,45 @@ export async function search(
 
   return getPublicationsResult(
     `http://localhost:3001/api/search_result/?id=${id}`
+  );
+}
+
+export async function getBacteriaResult(
+  apiUrl: string
+): Promise<SearchResultBacteria> {
+  const response = await fetch(apiUrl);
+
+  return await response.json().then((data) => ({
+    status: data.status,
+    id: data.id,
+    data: {
+      General: data.data.General,
+      Name_and_taxonomic_classification:
+        data.data["Name and taxonomic classification"],
+      "Physiology and metabolism": data.data["Physiology and metabolism"],
+    },
+  }));
+}
+
+export async function searchBacteria(
+  query: string
+): Promise<SearchResultBacteria> {
+  const options = {
+    method: "POST",
+    body: "",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  const response = await fetch(
+    `http://localhost:3001/api/search_request_bacteria/?query=${query}`,
+    options
+  ).then((res) => res.json());
+
+  const id: string = response.id;
+
+  return getBacteriaResult(
+    `http://localhost:3001/api/search_result_bacteria/?id=${id}`
   );
 }
