@@ -14,9 +14,9 @@ import Footer from "../components/footer";
 import styles from "../styles/Home.module.css";
 import Image from "next/image";
 import FormPublication from "../components/formPublication";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import FormBacterium from "../components/formBacterium";
-import { BacteriaInfo, General } from "../lib/types";
+import { BacteriaInfo } from "../lib/types";
 
 const handleClick = (e: any) => {
   if (e === "Bacteria") {
@@ -81,13 +81,26 @@ function PageError({ error }: { error: any }) {
   );
 }
 
-function ListPublications({
-  query,
-  source,
-}: {
+function PageErrorPublication({ error, query }: { error: any; query: string }) {
+  console.log("Error: ", error);
+
+  return (
+    <div className={styles.errorP}>
+      <div>
+        <h2>Publication (Error)</h2>
+        <p>No {query} articles found</p>
+      </div>
+      <Image src="/libro-de-ciencia.png" width="100" height="100" />
+    </div>
+  );
+}
+
+function ListPublications(props: {
   query: string;
   source: string;
+  state: boolean;
 }) {
+  const { query, source, state } = props;
   const [showFormBacterium, setShowFormBacterium] = useState(false);
   const [showFormPublication, setShowFormPublication] = useState(false);
 
@@ -97,19 +110,21 @@ function ListPublications({
       await searchPublications(query, source)
   );
 
-  if (error) return <PageError error={error} />;
+  if (error) return <PageErrorPublication error={error} query={query} />;
   if (!data)
-    return (
-      <div className={styles.load}>
-        <ReactLoading
-          type={"spokes"}
-          color={"#009988"}
-          height={"50%"}
-          width={"50%"}
-        />
-        <p>This will take just a moment</p>
-      </div>
-    );
+    if (state)
+      return (
+        <div className={styles.loadP}>
+          <ReactLoading
+            type={"balls"}
+            color={"#009988"}
+            height={"5%"}
+            width={"5%"}
+          />
+          <p>This will take just a moment</p>
+        </div>
+      );
+    else return <div></div>;
   const publications: Publication[] = data.results;
 
   return (
@@ -142,38 +157,56 @@ function ListPublications({
 
 function Bacteria({ bacteriaInfo }: { bacteriaInfo: BacteriaInfo }) {
   return (
-    <p>
-      <b>Full scientific name: </b>
-      {bacteriaInfo.Name_and_taxonomic_classification.LPSN[
-        "full scientific name"
-      ]
-        .replaceAll("<I>", "")
-        .replaceAll("</I>", "")}
-      <br />
-      <b>Synonym: </b>
-      {bacteriaInfo.Name_and_taxonomic_classification.LPSN.synonyms?.["synonym"]}
-      <br />
-      <b>Description:</b> {bacteriaInfo.General.description}
-      <br />
-      <b>Class:</b> {bacteriaInfo.Name_and_taxonomic_classification?.class}
-      <br />
-      <b>Domain:</b> {bacteriaInfo.Name_and_taxonomic_classification.domain}
-      <br />
-      <b>Phylum:</b> {bacteriaInfo.Name_and_taxonomic_classification.phylum}
-      <br />
-      <b> Order:</b> {bacteriaInfo.Name_and_taxonomic_classification.order}
-      <br />
-      <b>Family:</b> {bacteriaInfo.Name_and_taxonomic_classification.family}
-      <br />
-      <b>Genus:</b> {bacteriaInfo.Name_and_taxonomic_classification.genus}
-      <br />
-      <b>Species:</b> {bacteriaInfo.Name_and_taxonomic_classification.species}
-      <br />
-    </p>
+    <div className={styles.bacteriaInfo}>
+      <h1>
+        {bacteriaInfo.Name_and_taxonomic_classification.LPSN[
+          "full scientific name"
+        ]
+          .replaceAll("<I>", "")
+          .replaceAll("</I>", "")}
+      </h1>
+      <p>
+        <b>Synonym: </b>
+        {
+          bacteriaInfo.Name_and_taxonomic_classification.LPSN.synonyms?.[
+            "synonym"
+          ]
+        }
+      </p>
+      <p>
+        <b>Description:</b> {bacteriaInfo.General.description}
+      </p>
+      <p>
+        <b>Class:</b> {bacteriaInfo.Name_and_taxonomic_classification?.class}
+      </p>
+      <p>
+        <b>Domain:</b> {bacteriaInfo.Name_and_taxonomic_classification.domain}
+      </p>
+      <p>
+        <b>Phylum:</b> {bacteriaInfo.Name_and_taxonomic_classification.phylum}
+      </p>
+      <p>
+        <b> Order:</b> {bacteriaInfo.Name_and_taxonomic_classification.order}
+      </p>
+      <p>
+        <b>Family:</b> {bacteriaInfo.Name_and_taxonomic_classification.family}
+      </p>
+      <p>
+        <b>Genus:</b> {bacteriaInfo.Name_and_taxonomic_classification.genus}
+      </p>
+      <p>
+        <b>Species:</b> {bacteriaInfo.Name_and_taxonomic_classification.species}
+      </p>
+    </div>
   );
 }
 
-function BacteriaInfo({ query }: { query: string }) {
+function BacteriaInfo(props: {
+  query: string;
+  setState: Dispatch<SetStateAction<boolean>>;
+}) {
+  const { query, setState } = props;
+
   const { data, error } = useSWR(
     { query },
     async ({ query }: { query: string }) => await searchBacteria(query)
@@ -192,6 +225,8 @@ function BacteriaInfo({ query }: { query: string }) {
         <p>This will take just a moment</p>
       </div>
     );
+
+  setState(true);
   const bacteriaInfo: BacteriaInfo = data.data;
 
   return <Bacteria bacteriaInfo={bacteriaInfo} />;
@@ -200,10 +235,7 @@ function BacteriaInfo({ query }: { query: string }) {
 export default function SearchResult() {
   const router = useRouter();
 
-  // const source = Array.isArray(router.query.source)
-  //   ? router.query.source[0]
-  //   : router.query.source;
-  // if (!source) return <h1>No source received</h1>;
+  const [showLoadingPublications, setShowLoadingPublications] = useState(false);
 
   const query = Array.isArray(router.query.query)
     ? router.query.query[0]
@@ -219,8 +251,12 @@ export default function SearchResult() {
       </Head>
       <Header />
       <main className={styles.main}>
-        <BacteriaInfo query={query} />
-        <ListPublications query={query} source={"scholar"} />
+        <BacteriaInfo query={query} setState={setShowLoadingPublications} />
+        <ListPublications
+          query={query}
+          source={"scholar"}
+          state={showLoadingPublications}
+        />
       </main>
       <Footer />
     </div>

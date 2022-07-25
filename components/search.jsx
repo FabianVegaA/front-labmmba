@@ -23,10 +23,6 @@ function Search() {
           </button>
         </div>
       </section>
-      <section className={styles.checkbox}>
-        <input type="radio" name="source" value="scholar"/> Google Scholar
-        <input type="radio" name="source" value="lpsm" /> LPSM
-      </section>
     </form>
   );
 }

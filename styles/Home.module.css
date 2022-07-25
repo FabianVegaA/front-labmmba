@@ -13,6 +13,7 @@
   flex-direction: column;
   justify-content: center;
   padding: 1% 3%;
+  padding-bottom: 80px;
 }
 
 .footer {
@@ -86,9 +87,6 @@
   border: none;
   background-color: inherit;
 }
-.checkbox input {
-  margin-left: 2%;
-}
 .searchcontainer:hover {
   box-shadow: 0 1px 6px 0 #c2c2c2;
   border-color: #eeeeee;
@@ -120,10 +118,6 @@
 .header .input {
   width: 500px;
   margin: 0;
-}
-.header .checkbox {
-  display: flex;
-  align-items: center;
 }
 .main h2,
 .main h3,
@@ -302,12 +296,20 @@
   margin: 0;
   padding: 0;
 }
+.bacteriaInfo {
+  border-bottom: 1px solid #9e9e9e;
+  margin-bottom: 2%;
+  padding-bottom: 2%;
+}
 .error {
   position: absolute;
   top: 35%;
   left: 27%;
   display: flex;
   justify-content: center;
+}
+.errorP {
+  display: flex;
 }
 .error h1 {
   color: #005047;
@@ -336,11 +338,6 @@
   .header .input {
     width: 100%;
     padding: 1%;
-  }
-  .load {
-    position: absolute;
-    top: 35%;
-    right: 23%;
   }
   .title {
     font-size: 30px;
