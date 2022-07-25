@@ -339,11 +339,6 @@
     width: 100%;
     padding: 1%;
   }
-  .load {
-    position: absolute;
-    top: 35%;
-    right: 23%;
-  }
   .title {
     font-size: 30px;
   }
