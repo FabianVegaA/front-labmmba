@@ -81,6 +81,20 @@ function PageError({ error }: { error: any }) {
   );
 }
 
+function PageErrorPublication({ error, query }: { error: any; query: string }) {
+  console.log("Error: ", error);
+
+  return (
+    <div className={styles.errorP}>
+      <div>
+        <h2>Publication (Error)</h2>
+        <p>No {query} articles found</p>
+      </div>
+      <Image src="/libro-de-ciencia.png" width="100" height="100" />
+    </div>
+  );
+}
+
 function ListPublications({
   query,
   source,
@@ -97,7 +111,7 @@ function ListPublications({
       await searchPublications(query, source)
   );
 
-  if (error) return <PageError error={error} />;
+  if (error) return <PageErrorPublication error={error} query={query} />;
   if (!data)
     return (
       <div className={styles.load}>
@@ -142,34 +156,47 @@ function ListPublications({
 
 function Bacteria({ bacteriaInfo }: { bacteriaInfo: BacteriaInfo }) {
   return (
-    <p>
-      <b>Full scientific name: </b>
-      {bacteriaInfo.Name_and_taxonomic_classification.LPSN[
-        "full scientific name"
-      ]
-        .replaceAll("<I>", "")
-        .replaceAll("</I>", "")}
-      <br />
-      <b>Synonym: </b>
-      {bacteriaInfo.Name_and_taxonomic_classification.LPSN.synonyms?.["synonym"]}
-      <br />
-      <b>Description:</b> {bacteriaInfo.General.description}
-      <br />
-      <b>Class:</b> {bacteriaInfo.Name_and_taxonomic_classification?.class}
-      <br />
-      <b>Domain:</b> {bacteriaInfo.Name_and_taxonomic_classification.domain}
-      <br />
-      <b>Phylum:</b> {bacteriaInfo.Name_and_taxonomic_classification.phylum}
-      <br />
-      <b> Order:</b> {bacteriaInfo.Name_and_taxonomic_classification.order}
-      <br />
-      <b>Family:</b> {bacteriaInfo.Name_and_taxonomic_classification.family}
-      <br />
-      <b>Genus:</b> {bacteriaInfo.Name_and_taxonomic_classification.genus}
-      <br />
-      <b>Species:</b> {bacteriaInfo.Name_and_taxonomic_classification.species}
-      <br />
-    </p>
+    <div className={styles.bacteriaInfo}>
+      <h1>
+        {bacteriaInfo.Name_and_taxonomic_classification.LPSN[
+          "full scientific name"
+        ]
+          .replaceAll("<I>", "")
+          .replaceAll("</I>", "")}
+      </h1>
+      <p>
+        <b>Synonym: </b>
+        {
+          bacteriaInfo.Name_and_taxonomic_classification.LPSN.synonyms?.[
+            "synonym"
+          ]
+        }
+      </p>
+      <p>
+        <b>Description:</b> {bacteriaInfo.General.description}
+      </p>
+      <p>
+        <b>Class:</b> {bacteriaInfo.Name_and_taxonomic_classification?.class}
+      </p>
+      <p>
+        <b>Domain:</b> {bacteriaInfo.Name_and_taxonomic_classification.domain}
+      </p>
+      <p>
+        <b>Phylum:</b> {bacteriaInfo.Name_and_taxonomic_classification.phylum}
+      </p>
+      <p>
+        <b> Order:</b> {bacteriaInfo.Name_and_taxonomic_classification.order}
+      </p>
+      <p>
+        <b>Family:</b> {bacteriaInfo.Name_and_taxonomic_classification.family}
+      </p>
+      <p>
+        <b>Genus:</b> {bacteriaInfo.Name_and_taxonomic_classification.genus}
+      </p>
+      <p>
+        <b>Species:</b> {bacteriaInfo.Name_and_taxonomic_classification.species}
+      </p>
+    </div>
   );
 }
 
