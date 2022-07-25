@@ -14,9 +14,9 @@ import Footer from "../components/footer";
 import styles from "../styles/Home.module.css";
 import Image from "next/image";
 import FormPublication from "../components/formPublication";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import FormBacterium from "../components/formBacterium";
-import { BacteriaInfo, General } from "../lib/types";
+import { BacteriaInfo } from "../lib/types";
 
 const handleClick = (e: any) => {
   if (e === "Bacteria") {
@@ -95,13 +95,12 @@ function PageErrorPublication({ error, query }: { error: any; query: string }) {
   );
 }
 
-function ListPublications({
-  query,
-  source,
-}: {
+function ListPublications(props: {
   query: string;
   source: string;
+  state: boolean;
 }) {
+  const { query, source, state } = props;
   const [showFormBacterium, setShowFormBacterium] = useState(false);
   const [showFormPublication, setShowFormPublication] = useState(false);
 
@@ -113,17 +112,19 @@ function ListPublications({
 
   if (error) return <PageErrorPublication error={error} query={query} />;
   if (!data)
-    return (
-      <div className={styles.load}>
-        <ReactLoading
-          type={"spokes"}
-          color={"#009988"}
-          height={"50%"}
-          width={"50%"}
-        />
-        <p>This will take just a moment</p>
-      </div>
-    );
+    if (state)
+      return (
+        <div className={styles.loadP}>
+          <ReactLoading
+            type={"balls"}
+            color={"#009988"}
+            height={"5%"}
+            width={"5%"}
+          />
+          <p>This will take just a moment</p>
+        </div>
+      );
+    else return <div></div>;
   const publications: Publication[] = data.results;
 
   return (
@@ -200,7 +201,12 @@ function Bacteria({ bacteriaInfo }: { bacteriaInfo: BacteriaInfo }) {
   );
 }
 
-function BacteriaInfo({ query }: { query: string }) {
+function BacteriaInfo(props: {
+  query: string;
+  setState: Dispatch<SetStateAction<boolean>>;
+}) {
+  const { query, setState } = props;
+
   const { data, error } = useSWR(
     { query },
     async ({ query }: { query: string }) => await searchBacteria(query)
@@ -219,6 +225,8 @@ function BacteriaInfo({ query }: { query: string }) {
         <p>This will take just a moment</p>
       </div>
     );
+
+  setState(true);
   const bacteriaInfo: BacteriaInfo = data.data;
 
   return <Bacteria bacteriaInfo={bacteriaInfo} />;
@@ -227,10 +235,7 @@ function BacteriaInfo({ query }: { query: string }) {
 export default function SearchResult() {
   const router = useRouter();
 
-  // const source = Array.isArray(router.query.source)
-  //   ? router.query.source[0]
-  //   : router.query.source;
-  // if (!source) return <h1>No source received</h1>;
+  const [showLoadingPublications, setShowLoadingPublications] = useState(false);
 
   const query = Array.isArray(router.query.query)
     ? router.query.query[0]
@@ -246,8 +251,12 @@ export default function SearchResult() {
       </Head>
       <Header />
       <main className={styles.main}>
-        <BacteriaInfo query={query} />
-        <ListPublications query={query} source={"scholar"} />
+        <BacteriaInfo query={query} setState={setShowLoadingPublications} />
+        <ListPublications
+          query={query}
+          source={"scholar"}
+          state={showLoadingPublications}
+        />
       </main>
       <Footer />
     </div>
